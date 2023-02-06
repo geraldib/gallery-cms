@@ -1,0 +1,122 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Your-CRM{% endblock %}
+
+{% block body %}
+
+    <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+        <ol class="carousel-indicators">
+            <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+            <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+            <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+        </ol>
+        <div style="height: auto">
+            <div class="carousel-inner">
+                {% for slider_post in slider_posts %}
+                    {% if( loop.index == 1) %}
+                        <div class="carousel-item active" >
+                    {% else %}
+                        <div class="carousel-item" >
+                    {% endif %}
+                            <a href="/single/post/{{ slider_post.id }}">
+                           <img class="d-block" width="100%" height="500" src="{{ asset('uploads/') ~ slider_post.image }}">
+                                <div class="carousel-caption d-none d-md-block">
+                                    <h5>{{ slider_post.name }}</h5>
+                                    <p>{{ slider_post.body|length > 30 ? slider_post.body|slice(0, 30) ~ '...' : slider_post.body }}</p>
+                                </div>
+                            </a>
+                        </div>
+                {% endfor %}
+            </div>
+        </div>
+        <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+        </a>
+    </div>
+
+    <div class="container mb-5">
+        {% for post in all_posts %}
+
+            {% if(loop.index == 1) %}
+                <div class="row mt-5">
+            {% endif %}
+
+            {% if(loop.index % 4 == 0) %}
+                <div class="row mt-5">
+            {% endif %}
+
+                <div class="col-sm-4">
+                <div class="card" style="width: 18rem;">
+                    <img width="200" height="200" class="card-img-top" src="{{ asset('uploads/') ~ post.image }}" alt="Card image cap">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ post.name }}</h5>
+                        <p class="card-text">{{ post.body|length > 10 ? post.body|slice(0, 10) ~ '...' : post.body }}</p>
+                        <div class="row">
+                            <div class="col-6">
+                                {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                                    <div class="show_like">
+                                        {% set hasClicked = false %}
+                                        {% for userLike in user_likes %}
+                                            {% if(userLike.post.id == post.id) %}
+                                                {% set hasClicked = true %}
+                                                {% if(userLike.getIsLiked() == true) %}
+                                                    <a
+                                                            id="like-{{ post.id }}"
+                                                            onclick="likeClicked({{ post.id }})"
+                                                            class="btn btn-primary"
+                                                            data-token="{{ csrf_token(post.id) }}">
+                                                        <i class="fas fa-thumbs-up"></i> {{ post.likes }}
+                                                    </a>
+                                                {% else %}
+                                                    <a
+                                                            id="like-{{ post.id }}"
+                                                            onclick="likeClicked({{ post.id }})"
+                                                            class="btn btn-outline-secondary"
+                                                            data-token="{{ csrf_token(post.id) }}">
+                                                        <i class="fas fa-thumbs-up"></i> {{ post.likes }}
+                                                    </a>
+                                                {% endif %}
+                                            {% endif %}
+                                        {% endfor %}
+                                        {% if(hasClicked == false) %}
+                                            <a
+                                                    id="like-{{ post.id }}"
+                                                    onclick="likeClicked({{ post.id }})"
+                                                    class="btn btn-outline-secondary"
+                                                    data-token="{{ csrf_token(post.id) }}">
+                                                <i class="fas fa-thumbs-up"></i> {{ post.likes }}
+                                            </a>
+                                        {% endif %}
+                                    </div>
+                                {% else %}
+                                    <a href="/login" class="btn btn-secondary"><i class="fas fa-thumbs-up"></i> {{ post.likes }}</a>
+                                {% endif %}
+                            </div>
+                            <div class="col-6">
+                                <a href="/single/post/{{ post.id }}" class="btn btn-dark">Read More</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {% if(loop.index == 3 or loop.index % 7 == 0) %}
+                </div>
+            {% endif %}
+
+        {% endfor %}
+
+    </div>
+
+
+
+{% endblock %}
+
+{% block paginator %}
+        {{ knp_pagination_render(all_posts) }}
+{% endblock %}

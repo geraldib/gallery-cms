@@ -1,0 +1,24 @@
+
+.footer {
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    color: rgba(0,0,0,.9);
+    text-align: center;
+    padding: 50px;
+}
+.base-container{
+    min-height: 80vh;
+}
+
+.login-container{
+    height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.posts-paginator{
+    margin: auto;
+}
+

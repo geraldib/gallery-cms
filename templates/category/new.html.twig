@@ -1,0 +1,9 @@
+{% extends 'admin/index.html.twig' %}
+
+{% block content %}
+    <h1>Create new Category</h1>
+
+    {{ include('category/_form.html.twig') }}
+
+    <a class="btn btn-dark mt-4" href="{{ path('category_index') }}">back to list</a>
+{% endblock %}

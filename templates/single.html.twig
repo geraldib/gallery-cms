@@ -1,0 +1,124 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Your-CRM{% endblock %}
+
+{% block body %}
+
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-10">
+                <div class="p-5 bg-white rounded">
+                    <h1 class="mb-5">{{ post.name }}</h1>
+                    <img width="100%" height="500" src="{{ asset('uploads/') ~ post.image }}">
+                    <p class="mt-5">{{ post.body }}</p>
+                    <div class="row">
+                        <div class="col-6"><p class="mt-5 font-weight-bold">Author: {{ post.user.name }}</p></div>
+                        <div class="col-6">
+                            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                                <div class="mt-5 float-right show_like">
+                                    {% set hasClicked = false %}
+                                    {% for userLike in user_likes %}
+
+                                        {% if(userLike.post.id == post.id) %}
+                                            {% set hasClicked = true %}
+                                            {% if(userLike.getIsLiked() == true) %}
+                                                <a
+                                                        id="like-{{ post.id }}"
+                                                        onclick="likeClicked({{ post.id }})"
+                                                        class="btn btn-primary"
+                                                        data-token="{{ csrf_token(post.id) }}">
+                                                    <i class="fas fa-thumbs-up"></i> {{ post.likes }}
+                                                </a>
+                                            {% else %}
+                                                <a
+                                                        id="like-{{ post.id }}"
+                                                        onclick="likeClicked({{ post.id }})"
+                                                        class="btn btn-outline-secondary"
+                                                        data-token="{{ csrf_token(post.id) }}">
+                                                    <i class="fas fa-thumbs-up"></i> {{ post.likes }}
+                                                </a>
+                                            {% endif %}
+                                        {% endif %}
+                                    {% endfor %}
+                                    {% if(hasClicked == false) %}
+                                        <a
+                                                id="like-{{ post.id }}"
+                                                onclick="likeClicked({{ post.id }})"
+                                                class="btn btn-outline-secondary"
+                                                data-token="{{ csrf_token(post.id) }}">
+                                            <i class="fas fa-thumbs-up"></i> {{ post.likes }}
+                                        </a>
+                                    {% endif %}
+                                </div>
+                            {% else %}
+                                <div class="mt-5 float-right">
+                                    <a href="/login" class="btn btn-secondary"><i class="fas fa-thumbs-up"></i> {{ post.likes }}</a>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <div class="p-5 bg-white rounded">
+                    <h3 class="mb-5">Comments:</h3>
+                    <div class="row">
+                        <div class="col-10">
+                            <textarea
+                                    id="new-comment"
+                                    placeholder="Leave a comment..."
+                                    class="form-control w-100"
+                                    name="new_comment"></textarea>
+                        </div>
+                        <div class="col-2">
+                            <input id="user-comment-id" value="{{ userId }}" hidden>
+                            <input id="post-comment-id" value="{{ post.id }}" hidden>
+                            <a id="comment-btn" class="btn btn-dark">
+                                Post
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                {% for comment in comments %}
+
+                <div id="comment-{{ comment.id }}">
+                    <hr>
+                    <div class="p-2 bg-white rounded">
+                        <div class="ml-2 row">
+                            <div class="col-11">
+                                <p class="mt-3">{{ comment.comment }}</p>
+                                <p class="font-weight-bold">Author: {{ comment.user.name }}</p>
+                            </div>
+                            <div class="col-1">
+                                {% if
+                                    is_granted('IS_AUTHENTICATED_FULLY') and
+                                    userId == comment.user.id  or
+                                    is_granted('ROLE_ADMIN')
+                                %}
+                                    <a onclick="deleteComment({{ comment.id }})" style="font-size: larger;" class="text-danger">
+                                        <i class="fas fa-trash mt-5"></i>
+                                    </a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {% endfor %}
+
+                <div id="leave-new-comments">
+
+                </div>
+
+            </div>
+            <div class="col-2">
+                <img class="mb-5" width="200" height="200" src="https://s3-prod.adage.com/s3fs-public/styles/width_1024/public/20191210_328896624_3x2.jpg">
+                <img class="mb-5" width="200" height="200" src="https://propellerads.com/blog/wp-content/uploads/2019/05/Misleading_ads_.png">
+                <img class="mb-5" width="200" height="200" src="https://wordstream-files-prod.s3.amazonaws.com/s3fs-public/images/media/images/persuasive-ads-coca-cola.jpg">
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
+

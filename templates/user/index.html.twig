@@ -1,0 +1,68 @@
+{% extends 'admin/index.html.twig' %}
+
+{% block content %}
+
+    <h1 id="table-user">Users Table</h1>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Role</th>
+            <th>Image</th>
+            <th>Sex</th>
+            <th style="cursor: pointer;" id="filter-arrow-down" onclick="showFilters()">Filters <i class="fas fa-sort-down"></i></th>
+            <th style="cursor: pointer;" id="filter-arrow-up"   onclick="hideFilters()">Filters <i class="fas fa-sort-up"></i></th>
+        </tr>
+        </thead>
+        <tbody id="user-body-table">
+        <tr id="filters-row">
+            <td><strong>Search</strong></td>
+            <td><input type="text" class="form-control w-50" id="user-name"></td>
+            <td><input type="text" class="form-control w-50" id="user-email"></td>
+            <td></td>
+            <td></td>
+        </tr>
+            {% for user in users %}
+                <tr>
+                    <td>{{ user.id }}</td>
+                    <td>{{ user.name }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>
+                        {% if "ROLE_ADMIN" in user.roles %}
+                            <div class="btn btn-success">Administrator</div>
+                        {% else %}
+                            <div class="btn btn-warning">User</div>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <img width="50" height="50" src="https://lh3.googleusercontent.com/proxy/wNtIseYCLB7KYxE4hZ_4mO9gDrN0Wt7p8JUmepcm5BnGipo54-nwf312wDffc5kmaJwLB-qe2yG7Ua5SMuj2wufwnlxkfhKzQUO3WGzS41zlnJrqdyLNaFroteB0vfIRg3K0H5VnpEfG2nIPxEyLWnlWXf91VsAwG2L6">
+                    </td>
+                    <td class="font-weight-bold"><span style="color: #3c4caa">M</span>/<span style="color: palevioletred">F</span></td>
+                    <td></td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="4">no records found</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div id="pagination-holder" class="d-flex justify-content-center mb-5">
+        {{ knp_pagination_render(users) }}
+    </div>
+
+
+
+{% endblock %}
+
+{# Here lies the javascript #}
+{% block script %}
+    <script src="/assets/js/user-index.js"></script>
+{% endblock %}
+
+
+

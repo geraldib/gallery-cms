@@ -1,0 +1,65 @@
+{% extends 'admin/index.html.twig' %}
+
+
+{% block content %}
+
+    <h1>Post index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Body</th>
+                <th>Image</th>
+                <th>Show</th>
+                <th>Edit</th>
+                <th style="cursor: pointer;" id="filter-arrow-down" onclick="showFilters()">Filters <i class="fas fa-sort-down"></i></th>
+                <th style="cursor: pointer;" id="filter-arrow-up"   onclick="hideFilters()">Filters <i class="fas fa-sort-up"></i></th>
+            </tr>
+        </thead>
+        <tbody id="user-body-table">
+        <tr id="filters-row">
+            <td><strong>Search</strong></td>
+            <td><input type="text" class="form-control w-50" id="post-name"></td>
+        </tr>
+        {% for post in posts %}
+            <tr>
+                <td>{{ post.id }}</td>
+                <td>{{ post.name }}</td>
+                <td>{{ post.body|length > 30 ? post.body|slice(0, 30) ~ '...' : post.body }}</td>
+                <td><img src="{{ asset('uploads/') ~ post.image }}" width="100" height="50"></td>
+                <td>
+                    <a class="btn btn-success" href=" {{ path('post_show', {'id': post.id}) }}">show</a>
+                </td>
+                <td>
+                    <a class="btn btn-warning" href="{{ path('post_edit', {'id': post.id}) }}">edit</a>
+                </td>
+                <td></td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+
+        </tbody>
+    </table>
+
+    <a class="btn btn-info" href="{{ path('post_new') }}">Create new</a>
+
+    <div id="pagination-holder" class="d-flex justify-content-center mb-5">
+        {{ knp_pagination_render(posts) }}
+    </div>
+
+{% endblock %}
+
+{# Here lies the javascript #}
+{% block script %}
+    <script>
+        const uploadsBaseDir = "{{ asset('uploads/') }}"
+    </script>
+    <script src="/assets/js/post-index.js"></script>
+{% endblock %}
+
+

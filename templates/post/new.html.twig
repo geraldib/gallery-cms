@@ -1,0 +1,11 @@
+{% extends 'admin/index.html.twig' %}
+
+{% block content %}
+
+    <h1>Create new Post</h1>
+
+    {{ include('post/_form.html.twig') }}
+
+    <a class="btn btn-dark mt-3" href="{{ path('post_index') }}">back to list</a>
+
+{% endblock %}

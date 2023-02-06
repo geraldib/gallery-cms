@@ -1,0 +1,13 @@
+{% extends 'admin/index.html.twig' %}
+
+{% block content %}
+    <h1>Edit Comment</h1>
+
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+        <button class="btn btn-warning mt-3">{{ button_label|default('Update') }}</button>
+    {{ form_end(form) }}
+
+    <a class="btn btn-dark mt-3" href="{{ path('category_index') }}">back to list</a>
+
+{% endblock %}
