@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <p align="center"><a href="https://symfony.com" target="_blank">
     <img src="https://symfony.com/logos/symfony_black_02.svg">
 </a></p>
@@ -51,3 +52,7 @@ If you discover a security vulnerability, please follow our [disclosure procedur
 [9]: https://www.sigstore.dev/
 [10]: https://github.com/sigstore/cosign/blob/main/KEYLESS.md
 [11]: https://symfony.com/security
+=======
+# gallery-cms
+A CMS system build with synfony framework
+>>>>>>> 9a26f6cac479ac7c005b30e837f4b1ca8ee1dd6c
